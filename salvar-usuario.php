@@ -1,35 +1,26 @@
 <?php
-
-switch ($_REQUEST["acao"]) {
-        case 'cadastrar':
+    // Verifica se foi enviado o formulário
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        // Verifica se a ação é cadastrar e se os campos estão definidos
+        if (isset($_POST["acao"]) && $_POST["acao"] === "cadastrar" && isset($_POST["nome"]) && isset($_POST["email"]) && isset($_POST["senha"]) && isset($_POST["data_nasc"])) {
             // Recupera os valores dos campos
-            $nome = $_POST['nome'];
-            $email = $_POST['email'];
-            $senha = $_POST['senha'];
-            $data_nascimento = $_POST['dataNascimento'];
-            
-            echo "Cadastro realizado com sucesso.";
-            break;
+            $nome = $_POST["nome"];
+            $email = $_POST["email"];
+            $senha = $_POST["senha"];
+            $data_nasc = $_POST["data_nasc"];
 
-        case 'editar':
-            // Recupera os valores dos campos
-            $nome = $_POST['nome'];
-            $email = $_POST['email'];
-            $senha = $_POST['senha'];
-            $dataNascimento = $_POST['dataNascimento'];
+            // Insere os dados no banco de dados
+            $sql = "INSERT INTO usuarios (nome, email, senha, data_nasc) 
+                    VALUES ('{$nome}', '{$email}', '{$senha}', '{$data_nasc}')";
 
-            echo "Edição realizada com sucesso.";
-            break;
+            $res = $conn->query($sql);
 
-        case 'excluir':
-          
-            echo "Exclusão realizada com sucesso.";
-            break;
-
-        default:
-            // Ação inválida
-            echo "Ação inválida.";
-            break;
+            if ($res) {
+                echo "Cadastro realizado com sucesso.";
+            } else {
+                echo "Erro ao cadastrar o usuário: " . $conn->error;
+            }
+        }
     }
-
 ?>
+
