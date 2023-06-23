@@ -6,7 +6,7 @@
             // Recupera os valores dos campos
             $nome = $_POST["nome"];
             $email = $_POST["email"];
-            $senha = $_POST["senha"];
+            $senha =md5( $_POST["senha"]);
             $data_nasc = $_POST["data_nasc"];
 
             // Insere os dados no banco de dados
@@ -15,10 +15,12 @@
 
             $res = $conn->query($sql);
 
-            if ($res) {
-                echo "Cadastro realizado com sucesso.";
+            if ($res == true) {
+                print "<script> alert('Cadastro realizado com sucesso.')</script>";
+                print "<script> location.href ='?page=listar'</script>";
             } else {
-                echo "Erro ao cadastrar o usuário: " . $conn->error;
+                print "<script> alert('Não foi possível finalizar o cadastro')</script>";
+                print "<script> location.href ='?page=listar'</script>";
             }
         }
     }
